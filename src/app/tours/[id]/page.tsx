@@ -169,6 +169,26 @@ export default async function TourDetailPage({ params }: any) {
               </div>
             </div>
             
+            {/* Transportation Options - Only shown if available */}
+            {tour.transportationOptions && (
+              <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
+                <h2 className="text-2xl font-heading font-semibold mb-6">Transportation Options</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {tour.transportationOptions.map((option, index) => (
+                    <div key={index} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
+                      <h3 className="font-heading font-semibold text-lg mb-2">{option.type} Transportation</h3>
+                      <div className="mb-4">
+                        <span className="font-medium text-xl text-primary">
+                          {option.price === 0 ? 'Included' : `+$${option.price}`}
+                        </span>
+                      </div>
+                      <p className="text-gray-600">{option.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             {/* Gallery */}
             <div className="bg-white rounded-lg shadow-lg p-8">
               <h2 className="text-2xl font-heading font-semibold mb-6">Tour Gallery</h2>

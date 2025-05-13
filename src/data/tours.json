@@ -44,8 +44,25 @@
     "duration": "4 hours",
     "difficulty": "Easy",
     "startTimes": ["8:30 AM"],
-    "includedItems": ["Transportation", "Guide", "Coffee Tasting", "Light Snacks"],
+    "includedItems": ["Guide", "Coffee Tasting", "Light Snacks", "Lunch"],
     "whatToBring": ["Comfortable Walking Shoes", "Sunscreen", "Hat", "Camera", "Light Jacket (mornings can be cool)"],
+    "transportationOptions": [
+      {
+        "type": "Self-Drive",
+        "price": 0,
+        "description": "Drive yourself to the coffee farm (directions provided)"
+      },
+      {
+        "type": "ATV",
+        "price": 90,
+        "description": "ATV rental for self-guided transportation to and from the coffee farm ($150 total)"
+      },
+      {
+        "type": "Private Car",
+        "price": 90,
+        "description": "Private car service with driver to and from the coffee farm ($150 total)"
+      }
+    ],
     "imageUrl": "/images/tours/coffee-tour.jpg",
     "gallery": [
       "/images/gallery/coffee-1.jpg",
@@ -76,11 +93,11 @@
     "name": "Bird Watching",
     "price": 50,
     "description": "Costa Rica is a birdwatcher's paradise. Join our early morning tour to spot numerous local and migratory species.",
-    "longDescription": "With over 900 bird species, Costa Rica is a birdwatcher's paradise, and Nosara is one of the best places to experience this incredible diversity. Our early morning bird watching tours are led by passionate ornithologists who know exactly where to find the most spectacular species. From toucans and macaws to hummingbirds and motmots, you'll have the opportunity to see and learn about dozens of birds in their natural habitat. We provide professional spotting scopes and field guides to enhance your experience.",
+    "longDescription": "With dozens of vibrant bird species in its diverse habitats, Nosara is a birdwatcher's paradise. Our early morning bird watching tours are led by passionate local guides who know exactly where to find the region's most spectacular birds. From colorful motmots and trogons to striking woodpeckers and hummingbirds, you'll discover Nosara's unique avian residents in their natural habitat. We provide professional spotting scopes and field guides to enhance your experience while exploring the area's mangroves, dry forests, and coastal ecosystems.",
     "duration": "4 hours",
     "difficulty": "Easy",
     "startTimes": ["5:30 AM"],
-    "includedItems": ["Expert Guide", "Binoculars", "Field Guide", "Spotting Scope", "Breakfast", "Coffee/Tea"],
+    "includedItems": ["Expert Guide", "Binoculars", "Field Guide", "Spotting Scope", "Fresh Fruit", "Coffee/Tea"],
     "whatToBring": ["Comfortable Walking Shoes", "Quiet, Neutral-Colored Clothing", "Camera with Zoom Lens", "Mosquito Repellent"],
     "imageUrl": "/images/tours/bird-watching.jpg",
     "gallery": [

@@ -11,6 +11,13 @@ export interface Tour {
   whatToBring: string[];
   imageUrl: string;
   gallery: string[];
+  transportationOptions?: TransportationOption[];
+}
+
+export interface TransportationOption {
+  type: string;
+  price: number;
+  description: string;
 }
 
 export interface BookingFormData {
