@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import TourCard from '../tours/TourCard';
 import { Tour } from '@/types';
+import Link from 'next/link';
 
 export default function FeaturedTours() {
   const [tours, setTours] = useState<Tour[]>([]);
@@ -62,6 +63,12 @@ export default function FeaturedTours() {
         {tours.slice(0, 3).map((tour) => (
           <TourCard key={tour.id} tour={tour} />
         ))}
+      </div>
+      
+      <div className="text-center mt-12">
+        <Link href="/tours" className="btn-primary inline-block px-8 py-3">
+          View All Tours
+        </Link>
       </div>
     </section>
   );
