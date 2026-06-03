@@ -1,5 +1,6 @@
 import MainLayout from '@/components/layout/MainLayout';
 import BookingForm from '@/components/booking/BookingForm';
+import TourPolicies from '@/components/tours/TourPolicies';
 import Image from 'next/image';
 import { Metadata } from 'next';
 
@@ -44,9 +45,10 @@ export default async function BookingPage(props: any) {
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-heading font-semibold text-lg mb-3">Payment</h3>
+                  <h3 className="font-heading font-semibold text-lg mb-3">How Booking Works</h3>
                   <p className="text-gray-600">
-                    Payment is made in person on the day of your tour. We accept cash (USD or Costa Rican Colones), major credit cards, and PayPal.
+                    Submit your request online and we&apos;ll email you to confirm availability.
+                    Payment is collected in person on the day of your tour (cash, card, or PayPal).
                   </p>
                 </div>
                 
@@ -70,9 +72,14 @@ export default async function BookingPage(props: any) {
                 </div>
                 
                 <div>
-                  <h3 className="font-heading font-semibold text-lg mb-3">Group Discounts</h3>
+                  <h3 className="font-heading font-semibold text-lg mb-3">Transportation & Taxes</h3>
+                  <TourPolicies />
+                </div>
+                
+                <div>
+                  <h3 className="font-heading font-semibold text-lg mb-3">Group Bookings</h3>
                   <p className="text-gray-600">
-                    Groups of 6 or more receive a 10% discount on all tours. Please contact us directly for large group bookings or private tours.
+                    Please contact us directly for large group bookings, private tours, or ATV pricing.
                   </p>
                 </div>
               </div>

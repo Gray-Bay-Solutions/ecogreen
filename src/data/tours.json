@@ -1,50 +1,76 @@
 [
   {
-    "id": "kayak-tour",
-    "name": "Kayak Tour",
-    "price": 70,
-    "description": "Explore the beautiful mangroves and waterways of Nosara on a guided kayak tour. Perfect for beginners and experienced paddlers alike.",
-    "longDescription": "Glide through Nosara's pristine waterways and discover the unique ecosystem of the mangrove forests. Our experienced guides will lead you through calm waters where you can spot wildlife including birds, monkeys, and maybe even crocodiles from a safe distance. This tour is suitable for all skill levels, and we provide all necessary equipment and safety gear.",
-    "duration": "3 hours",
+    "id": "mangrove-tour",
+    "name": "Mangrove Tour",
+    "price": 75,
+    "description": "Explore Nosara's mysterious mangroves by kayak or paddleboard — calm waters, local wildlife, and fun for all ages.",
+    "longDescription": "Glide through Nosara's pristine mangrove waterways on a kayak or paddleboard with an experienced local guide. Spot birds, monkeys, and other wildlife while learning about this unique coastal ecosystem. Life jackets and fresh fruit are included. Suitable for all ages and skill levels. Transportation may be arranged for an additional cost — please inquire when booking.",
+    "duration": "2 hours",
     "difficulty": "Easy to Moderate",
-    "startTimes": ["8:00 AM", "1:00 PM"],
-    "includedItems": ["Kayak & Paddle", "Life Jacket", "Dry Bag", "Water", "Fresh Fruit"],
+    "startTimes": ["6:00 AM", "7:00 AM", "8:00 AM"],
+    "minGroupSize": 2,
+    "maxGroupSize": 20,
+    "includedItems": ["Kayak or Paddleboard & Paddle", "Life Jacket", "Fresh Fruit", "All Ages Welcome"],
     "whatToBring": ["Sunscreen", "Hat", "Sunglasses", "Swimwear", "Towel", "Change of Clothes"],
     "imageUrl": "/images/tours/kayak-tour.jpg",
     "gallery": [
       "/images/gallery/kayak-1.jpg",
       "/images/gallery/kayak-2.jpg",
-      "/images/gallery/kayak-3.jpg"
+      "/images/gallery/paddle-1.jpg"
     ]
   },
   {
-    "id": "paddle-board",
-    "name": "Paddle Board",
-    "price": 70,
-    "description": "Stand-up paddle boarding in the serene waters around Nosara. Enjoy beautiful views and a great full-body workout.",
-    "longDescription": "Experience the thrill of stand-up paddle boarding in the beautiful waters of Nosara. This activity offers not only a fantastic full-body workout but also a peaceful way to connect with nature. Our instructors will teach you proper technique and safety, making this activity accessible to beginners while still exciting for experienced paddle boarders. Enjoy stunning views of the coastline from a unique perspective.",
-    "duration": "2.5 hours",
-    "difficulty": "Easy to Moderate",
-    "startTimes": ["9:00 AM", "2:00 PM"],
-    "includedItems": ["Paddle Board & Paddle", "Leash", "Life Jacket", "Water", "Fresh Fruit"],
-    "whatToBring": ["Sunscreen", "Hat", "Sunglasses", "Swimwear", "Towel", "Change of Clothes"],
-    "imageUrl": "/images/tours/paddle-board.jpg",
+    "id": "nature-hike",
+    "name": "Nature Hike",
+    "price": 60,
+    "description": "Trek through lush forest trails with a local guide who shares knowledge of Nosara's rich ecosystem and wildlife.",
+    "longDescription": "Immerse yourself in the biodiversity of Costa Rica's tropical forests on this guided nature hike. Our expert guides lead you through scenic trails, pointing out flora and fauna while sharing deep knowledge of the local ecosystem. Transportation may be arranged for an additional cost — please inquire when booking.",
+    "duration": "2 hours",
+    "difficulty": "Moderate",
+    "startTimes": ["6:00 AM", "7:00 AM"],
+    "minGroupSize": 2,
+    "maxGroupSize": 20,
+    "includedItems": ["Guide", "Fresh Fruit", "Bug Spray", "Spotting Scope (optional)"],
+    "whatToBring": ["Hiking Shoes", "Sunscreen", "Hat", "Camera", "Rain Jacket (seasonal)"],
+    "imageUrl": "/images/tours/nature-hike.jpg",
     "gallery": [
-      "/images/gallery/paddle-1.jpg",
-      "/images/gallery/paddle-2.jpg",
-      "/images/gallery/paddle-3.jpg"
+      "/images/gallery/hike-1.jpg",
+      "/images/gallery/hike-2.jpg",
+      "/images/gallery/hike-3.jpg"
+    ]
+  },
+  {
+    "id": "bird-watching",
+    "name": "Birdwatching",
+    "price": 65,
+    "description": "Early-morning birdwatching in Nosara's diverse habitats — motmots, trogons, hummingbirds, and more.",
+    "longDescription": "With dozens of vibrant bird species in its diverse habitats, Nosara is a birdwatcher's paradise. Our guides know exactly where to find the region's most spectacular birds across mangroves, dry forests, and coastal ecosystems. Tour availability depends on the season. Transportation may be arranged for an additional cost — please inquire when booking.",
+    "duration": "3 hours",
+    "difficulty": "Easy",
+    "startTimes": ["6:00 AM"],
+    "minGroupSize": 2,
+    "maxGroupSize": 12,
+    "includedItems": ["Expert Guide", "Bug Spray", "Spotting Scope", "Fresh Fruit"],
+    "whatToBring": ["Comfortable Walking Shoes", "Quiet, Neutral-Colored Clothing", "Camera with Zoom Lens"],
+    "imageUrl": "/images/tours/bird-watching.jpg",
+    "gallery": [
+      "/images/gallery/bird-1.jpg",
+      "/images/gallery/bird-2.jpg",
+      "/images/gallery/bird-3.jpg"
     ]
   },
   {
     "id": "coffee-tour",
-    "name": "Coffee Tour",
-    "price": 65,
-    "description": "Discover the process of sustainable coffee production in Costa Rica, from bean to cup, with tastings included.",
-    "longDescription": "Join us for an educational journey through Costa Rica's renowned coffee culture. Visit a local sustainable coffee farm where you'll learn about the entire process of coffee production, from planting to harvesting to processing. Our knowledgeable guides will explain the importance of sustainable practices and how they contribute to the exceptional quality of Costa Rican coffee. The tour concludes with a delicious coffee tasting session where you can sample different varieties.",
-    "duration": "4 hours",
+    "name": "Organic Coffee Tour",
+    "price": 60,
+    "description": "Visit an organic coffee farm and learn the full bean-to-cup process, with lunch included.",
+    "longDescription": "Join us for an educational journey through Costa Rica's renowned coffee culture. Visit a local organic coffee farm where you'll learn about planting, harvesting, processing, and sustainable practices. Along the way, discover medicinal plants and their traditional uses. Lunch is included, and the tour concludes with a delicious coffee tasting. Transportation may be arranged for an additional cost (ATV or car) — please inquire when booking.",
+    "duration": "3–4 hours",
     "difficulty": "Easy",
-    "startTimes": ["8:30 AM"],
-    "includedItems": ["Guide", "Coffee Tasting", "Light Snacks", "Lunch"],
+    "startTimes": ["6:00 AM", "8:30 AM"],
+    "minGroupSize": 2,
+    "maxGroupSize": 12,
+    "includedItems": ["Guide", "Coffee Tasting", "Lunch Included"],
     "whatToBring": ["Comfortable Walking Shoes", "Sunscreen", "Hat", "Camera", "Light Jacket (mornings can be cool)"],
     "transportationOptions": [
       {
@@ -54,13 +80,13 @@
       },
       {
         "type": "ATV",
-        "price": 90,
-        "description": "ATV rental for self-guided transportation to and from the coffee farm ($150 total)"
+        "price": 0,
+        "description": "ATV transportation may be arranged for an additional cost — inquire when booking"
       },
       {
         "type": "Private Car",
-        "price": 90,
-        "description": "Private car service with driver to and from the coffee farm ($150 total)"
+        "price": 0,
+        "description": "Private car service may be arranged for an additional cost — inquire when booking"
       }
     ],
     "imageUrl": "/images/tours/coffee-tour.jpg",
@@ -71,39 +97,83 @@
     ]
   },
   {
-    "id": "nature-hike",
-    "name": "Nature Hike",
-    "price": 55,
-    "description": "Trek through the lush forests of Nosara with expert guides who will help you spot local wildlife and explain the rich ecosystem.",
-    "longDescription": "Immerse yourself in the biodiversity of Costa Rica's tropical forests on this guided nature hike. Our expert naturalists will lead you through scenic trails, pointing out the incredible variety of flora and fauna that make this ecosystem so special. Learn about medicinal plants, spot monkeys swinging through the trees, and discover the complex relationships between species in this vibrant habitat. This tour is an excellent opportunity for photography and gaining a deeper appreciation for conservation efforts.",
-    "duration": "3 hours",
+    "id": "waterfall-tour",
+    "name": "Waterfall Tour",
+    "price": 40,
+    "description": "Discover Nosara's hidden waterfalls — Mala Noche, Pilas Blancas, Angeles, and Belen.",
+    "longDescription": "Explore some of Nosara's most beautiful waterfalls on a guided tour through lush jungle trails. Depending on conditions and season, visits may include Mala Noche, Pilas Blancas, Angeles, and Belen waterfalls — each with its own unique charm. Transportation may be arranged for an additional cost — please inquire when booking.",
+    "duration": "2–3 hours",
     "difficulty": "Moderate",
-    "startTimes": ["7:00 AM", "3:00 PM"],
-    "includedItems": ["Guide", "Binoculars", "Walking Stick", "Water", "Trail Snacks"],
-    "whatToBring": ["Hiking Shoes", "Insect Repellent", "Sunscreen", "Hat", "Camera", "Rain Jacket (seasonal)"],
-    "imageUrl": "/images/tours/nature-hike.jpg",
+    "startTimes": ["6:00 AM", "7:00 AM", "8:00 AM"],
+    "minGroupSize": 2,
+    "maxGroupSize": 12,
+    "includedItems": ["Guide", "Fresh Fruit"],
+    "whatToBring": ["Swimwear", "Closed-Toe Shoes", "Sunscreen", "Hat", "Towel", "Water Bottle"],
+    "imageUrl": "/images/tours/waterfall-tour.jpg",
     "gallery": [
+      "/images/gallery/hike-3.jpg",
       "/images/gallery/hike-1.jpg",
-      "/images/gallery/hike-2.jpg",
-      "/images/gallery/hike-3.jpg"
+      "/images/gallery/hike-2.jpg"
     ]
   },
   {
-    "id": "bird-watching",
-    "name": "Bird Watching",
-    "price": 50,
-    "description": "Costa Rica is a birdwatcher's paradise. Join our early morning tour to spot numerous local and migratory species.",
-    "longDescription": "With dozens of vibrant bird species in its diverse habitats, Nosara is a birdwatcher's paradise. Our early morning bird watching tours are led by passionate local guides who know exactly where to find the region's most spectacular birds. From colorful motmots and trogons to striking woodpeckers and hummingbirds, you'll discover Nosara's unique avian residents in their natural habitat. We provide professional spotting scopes and field guides to enhance your experience while exploring the area's mangroves, dry forests, and coastal ecosystems.",
-    "duration": "4 hours",
+    "id": "snorkeling",
+    "name": "Snorkeling Tour",
+    "price": 55,
+    "description": "Guided snorkeling from the shore with equipment included — boat tour available for an additional cost.",
+    "longDescription": "Discover colorful marine life in the clear waters around Nosara. We start from the shore with all snorkeling equipment included and fresh fruit provided. A boat tour can also be arranged for an additional cost depending on conditions and your preferences. Transportation may be arranged for an additional cost — please inquire when booking.",
+    "duration": "2 hours",
     "difficulty": "Easy",
-    "startTimes": ["5:30 AM"],
-    "includedItems": ["Expert Guide", "Binoculars", "Field Guide", "Spotting Scope", "Fresh Fruit", "Coffee/Tea"],
-    "whatToBring": ["Comfortable Walking Shoes", "Quiet, Neutral-Colored Clothing", "Camera with Zoom Lens", "Mosquito Repellent"],
-    "imageUrl": "/images/tours/bird-watching.jpg",
+    "startTimes": ["6:00 AM", "7:00 AM", "8:00 AM"],
+    "minGroupSize": 2,
+    "maxGroupSize": 12,
+    "includedItems": ["Guide", "Snorkeling Equipment", "Fresh Fruit"],
+    "whatToBring": ["Sunscreen", "Swimwear", "Towel", "Rash Guard"],
+    "imageUrl": "/images/tours/snorkeling.jpg",
     "gallery": [
-      "/images/gallery/bird-1.jpg",
-      "/images/gallery/bird-2.jpg",
-      "/images/gallery/bird-3.jpg"
+      "/images/gallery/snorkeling-1.jpg",
+      "/images/gallery/snorkeling-2.jpg",
+      "/images/gallery/snorkeling-3.jpg"
+    ]
+  },
+  {
+    "id": "castilla-tour",
+    "name": "La Castilla Tour",
+    "price": 50,
+    "description": "A 3-hour waterfall hiking adventure through lush jungle trails, ending with a traditional Costa Rican lunch.",
+    "longDescription": "Dare to discover a hidden paradise on this 5 km (3-mile) hike that leads you to breathtaking waterfalls, each with its own unique charm and energy. This adventure blends excitement, nature, and serenity, featuring lush jungle trails, the songs of tropical birds, and views that will leave you speechless. Designed for those who enjoy outdoor challenges, it's a journey that calls for a bit of endurance and an adventurous spirit, but rewards every step with unforgettable scenery and the refreshing rush of crystal-clear water. To top it all off, you'll savor a traditional Costa Rican lunch, full of local flavor and served with spectacular views — the perfect ending to a day filled with connection and plenty of pura vida!",
+    "duration": "3 hours",
+    "difficulty": "Moderate",
+    "startTimes": ["6:00 AM", "7:00 AM"],
+    "minGroupSize": 2,
+    "maxGroupSize": 20,
+    "includedItems": ["Guide", "Traditional Lunch", "Bug Spray", "Fresh Fruit", "Coffee or Tea"],
+    "whatToBring": ["Swimwear", "Sunglasses", "Hat", "Closed-Toe Shoes", "Sunscreen", "Water Bottle (can be filled on site)"],
+    "imageUrl": "/images/tours/castilla-tour.jpg",
+    "gallery": [
+      "/images/gallery/castilla-1.jpg",
+      "/images/gallery/castilla-2.jpg",
+      "/images/gallery/castilla-3.jpg"
+    ]
+  },
+  {
+    "id": "atv-tour",
+    "name": "ATV Tours",
+    "contactForPricing": true,
+    "description": "Guided ATV adventures — river, coffee farm, waterfall, and coast routes available. Contact us for pricing.",
+    "longDescription": "Experience Nosara from a different perspective on a guided ATV tour. Choose from river tours, coffee farm routes, waterfall adventures, or coast tours — each tailored to your group's experience and comfort level. Helmets and safety briefing included, with optional lunch and fresh fruit available. For pricing and availability, please contact us directly.",
+    "duration": "2–3 hours",
+    "difficulty": "Moderate",
+    "startTimes": ["6:00 AM", "7:00 AM", "8:00 AM"],
+    "minGroupSize": 1,
+    "maxGroupSize": 8,
+    "includedItems": ["Guide", "ATV", "Helmet", "Fresh Fruit", "Lunch (optional)"],
+    "whatToBring": ["Closed-Toe Shoes", "Sunscreen", "Sunglasses", "Light Clothing"],
+    "imageUrl": "/images/tours/atv-tour.jpg",
+    "gallery": [
+      "/images/gallery/atv-1.jpg",
+      "/images/gallery/atv-2.jpg",
+      "/images/gallery/atv-3.jpg"
     ]
   }
-] 
+]

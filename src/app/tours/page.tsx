@@ -4,10 +4,13 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { Tour } from '@/types';
 import tours from '@/data/tours.json';
+import { formatTourPrice } from '@/lib/tours';
+import ToursIntro from '@/components/tours/ToursIntro';
+import ToursInfographic from '@/components/tours/ToursInfographic';
 
 export const metadata: Metadata = {
   title: 'Our Tours | Eco Green Nosara',
-  description: 'Explore our eco-friendly tours in Nosara, Costa Rica including kayaking, paddle boarding, coffee tours, nature hikes, and bird watching.',
+  description: 'Explore eco-friendly tours in Nosara, Costa Rica — mangrove kayak & paddle, nature hikes, birdwatching, organic coffee, waterfalls, snorkeling, La Castilla, and ATV adventures.',
 };
 
 export default function ToursPage() {
@@ -31,17 +34,12 @@ export default function ToursPage() {
       </div>
 
       {/* Tours Introduction */}
-      <section className="py-16 bg-background">
+      <section className="py-8 bg-background">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-heading font-bold text-text mb-4">Explore Our Eco-Tours</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              Each of our tours is designed to provide a unique and enriching experience of Nosara&apos;s natural environment. Our expert guides ensure your safety while sharing their deep knowledge of local ecosystems.
-            </p>
-          </div>
+          <ToursIntro />
 
           {/* Tour Listings */}
-          <div className="space-y-16">
+          <div className="space-y-8">
             {tours.map((tour: Tour) => (
               <div key={tour.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-5">
@@ -56,15 +54,17 @@ export default function ToursPage() {
                   </div>
                   
                   {/* Tour Details */}
-                  <div className="p-8 md:col-span-3">
-                    <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-2xl font-heading font-bold">{tour.name}</h3>
-                      <span className="text-primary font-bold text-xl">${tour.price}</span>
+                  <div className="p-5 md:p-6 md:col-span-3">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-xl font-heading font-bold">{tour.name}</h3>
+                      <span className={`font-bold text-xl ${tour.contactForPricing ? 'text-sm text-gray-600' : 'text-primary'}`}>
+                        {formatTourPrice(tour)}
+                      </span>
                     </div>
                     
-                    <p className="text-gray-600 mb-6">{tour.description}</p>
+                    <p className="text-gray-600 text-sm mb-4">{tour.description}</p>
                     
-                    <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4 text-sm">
                       <div>
                         <span className="block text-sm text-gray-500 mb-1">Duration</span>
                         <span className="font-medium">{tour.duration}</span>
@@ -87,10 +87,10 @@ export default function ToursPage() {
                         View Details
                       </Link>
                       <Link 
-                        href={`/booking?tour=${tour.id}`}
+                        href={tour.contactForPricing ? '/contact' : `/booking?tour=${tour.id}`}
                         className="btn-secondary"
                       >
-                        Book Now
+                        {tour.contactForPricing ? 'Contact for Pricing' : 'Book Now'}
                       </Link>
                     </div>
                   </div>
@@ -101,31 +101,7 @@ export default function ToursPage() {
         </div>
       </section>
 
-      {/* Group Booking Section */}
-      <section className="py-16 bg-primary/10">
-        <div className="container-custom">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-heading font-bold text-text mb-4">Group Bookings & Private Tours</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
-              Planning a family reunion, corporate retreat, or special occasion? We offer private tours and group discounts.
-            </p>
-          </div>
-          
-          <div className="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
-            <p className="text-gray-600 mb-6">
-              For groups of 6 or more, we offer a 10% discount on any of our tours. Private tours can also be arranged for a more personalized experience.
-            </p>
-            <p className="text-gray-600 mb-6">
-              Contact us directly to discuss your group&apos;s needs and we&apos;ll create a custom experience that everyone will enjoy.
-            </p>
-            <div className="text-center">
-              <Link href="/contact" className="btn-primary">
-                Contact Us for Group Bookings
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ToursInfographic />
     </MainLayout>
   );
 } 

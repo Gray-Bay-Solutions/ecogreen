@@ -1,19 +1,31 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Tour } from '@/types';
 import tours from '@/data/tours.json';
+import { formatTourPrice, isBookableOnline } from '@/lib/tours';
+import { PAYMENTS_ENABLED } from '@/lib/booking-config';
+import Link from 'next/link';
 
 interface BookingFormProps {
   selectedTourId?: string;
 }
 
+declare global {
+  interface Window {
+    paypal?: any;
+  }
+}
+
 export default function BookingForm({ selectedTourId }: BookingFormProps) {
-  // const router = useRouter();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [paypalLoaded] = useState(false);
+  const [showPayPal, setShowPayPal] = useState(false);
+  const [bookingReference, setBookingReference] = useState<string>('');
+  const [orderId, setOrderId] = useState<string>('');
 
   const [formData, setFormData] = useState({
     tourId: selectedTourId || '',
@@ -24,6 +36,7 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
     email: '',
     phone: '',
     specialRequests: '',
+    transportationType: '',
   });
 
   // Available times for the selected tour
@@ -66,14 +79,20 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
     }
   };
 
+  // Get selected tour
+  const selectedTour = tours.find((tour: Tour) => tour.id === formData.tourId);
+
   const validateForm = () => {
     const errors: Record<string, string> = {};
+    const tour = tours.find((t: Tour) => t.id === formData.tourId);
     
     if (!formData.tourId) errors.tourId = 'Please select a tour';
     if (!formData.date) errors.date = 'Please select a date';
     if (!formData.time) errors.time = 'Please select a time';
     if (!formData.participants || parseInt(formData.participants) < 1) {
       errors.participants = 'Please enter at least 1 participant';
+    } else if (tour?.maxGroupSize && parseInt(formData.participants) > tour.maxGroupSize) {
+      errors.participants = `Maximum ${tour.maxGroupSize} participants for this tour`;
     }
     if (!formData.name.trim()) errors.name = 'Please enter your name';
     if (!formData.email.trim()) {
@@ -86,70 +105,146 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
+  
+  // Calculate total price
+  const calculateTotal = () => {
+    if (!selectedTour || selectedTour.contactForPricing || selectedTour.price == null) return 0;
+    
+    const basePrice = selectedTour.price * parseInt(formData.participants || '1');
+    let transportationPrice = 0;
+    
+    if (formData.transportationType && selectedTour.transportationOptions) {
+      const transportOption = selectedTour.transportationOptions.find(
+        (opt) => opt.type === formData.transportationType
+      );
+      if (transportOption) {
+        transportationPrice = transportOption.price * parseInt(formData.participants || '1');
+      }
+    }
+    
+    return basePrice + transportationPrice;
+  };
+
+  // Initialize PayPal buttons (disabled — set NEXT_PUBLIC_PAYMENTS_ENABLED=true to re-enable)
+  useEffect(() => {
+    if (!PAYMENTS_ENABLED) return;
+    if (paypalLoaded && showPayPal && window.paypal && orderId) {
+      const container = document.getElementById('paypal-button-container');
+      if (container && !container.hasChildNodes()) {
+        window.paypal
+          .Buttons({
+            createOrder: () => {
+              return orderId;
+            },
+            onApprove: async (data: any) => {
+              try {
+                const response = await fetch('/api/bookings/capture', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    orderId: data.orderID,
+                    bookingReference,
+                  }),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                  router.push(`/booking/confirmation/${bookingReference}`);
+                } else {
+                  alert('Payment failed. Please try again.');
+                }
+              } catch (error) {
+                console.error('Payment capture error:', error);
+                alert('Payment failed. Please try again.');
+              }
+            },
+            onError: (err: any) => {
+              console.error('PayPal error:', err);
+              alert('An error occurred with PayPal. Please try again.');
+            },
+          })
+          .render('#paypal-button-container');
+      }
+    }
+  }, [paypalLoaded, showPayPal, orderId, bookingReference, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) return;
+
+    if (selectedTour && !isBookableOnline(selectedTour)) {
+      return;
+    }
     
     setIsSubmitting(true);
     
     try {
-      // In a real app, this would be an API call
-      // For now, we'll simulate a delay and success
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Reset form and show success message
-      setIsSubmitted(true);
-      setFormData({
-        tourId: '',
-        date: '',
-        time: '',
-        participants: '1',
-        name: '',
-        email: '',
-        phone: '',
-        specialRequests: '',
+      const response = await fetch('/api/bookings/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
+
+      const result = await response.json();
+
+      if (result.success) {
+        if (result.mode === 'payment' && PAYMENTS_ENABLED) {
+          setBookingReference(result.bookingReference);
+          setOrderId(result.orderId);
+          setShowPayPal(true);
+          return;
+        }
+
+        if (result.booking) {
+          sessionStorage.setItem(
+            `booking:${result.bookingReference}`,
+            JSON.stringify(result.booking)
+          );
+        }
+        router.push(`/booking/confirmation/${result.bookingReference}`);
+        return;
+      }
+
+      alert(result.error || 'Failed to submit booking request. Please try again.');
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleNewBooking = () => {
-    setIsSubmitted(false);
-  };
-
-  if (isSubmitted) {
+  if (PAYMENTS_ENABLED && showPayPal) {
     return (
-      <div className="text-center py-8">
-        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-heading font-semibold mb-4">Complete Your Payment</h2>
+          <div className="mb-6 bg-gray-50 p-4 rounded-lg">
+            <p className="text-sm text-gray-600 mb-2">Booking Reference:</p>
+            <p className="font-bold text-lg">{bookingReference}</p>
+            <p className="text-sm text-gray-600 mt-4 mb-2">Total Amount:</p>
+            <p className="font-bold text-2xl text-primary">${calculateTotal().toFixed(2)}</p>
+          </div>
+          <div id="paypal-button-container"></div>
         </div>
-        <h2 className="text-2xl font-heading font-semibold mb-4">Booking Confirmed!</h2>
-        <p className="text-gray-600 mb-8">
-          Thank you for booking with Eco Green Nosara. We&apos;ve sent a confirmation email with all the details.
-          Our team will be in touch shortly to confirm your reservation.
-        </p>
-        <button
-          onClick={handleNewBooking}
-          className="btn-primary"
-        >
-          Make Another Booking
-        </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2 className="text-2xl font-heading font-semibold mb-6">Book Your Tour</h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <>
+      {/* PayPal SDK — disabled while using email-only bookings
+      <Script
+        src={`https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=USD`}
+        onLoad={() => setPaypalLoaded(true)}
+      />
+      */}
+      <form onSubmit={handleSubmit}>
+        <h2 className="text-2xl font-heading font-semibold mb-6">Book Your Tour</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* Tour Selection */}
         <div>
           <label htmlFor="tourId" className="block font-medium text-text mb-1">
@@ -168,7 +263,7 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
             <option value="">Select a tour...</option>
             {tours.map((tour: Tour) => (
               <option key={tour.id} value={tour.id}>
-                {tour.name} (${tour.price})
+                {tour.name} ({formatTourPrice(tour)})
               </option>
             ))}
           </select>
@@ -240,7 +335,7 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
             value={formData.participants}
             onChange={handleChange}
             min="1"
-            max="12"
+            max={selectedTour?.maxGroupSize ?? 12}
             className={`w-full p-3 rounded-md border ${
               formErrors.participants ? 'border-red-500' : 'border-gray-300'
             } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent`}
@@ -251,6 +346,39 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
           )}
         </div>
       </div>
+      
+      {/* Transportation Options */}
+      {selectedTour?.transportationOptions && (
+        <div className="mb-6">
+          <h3 className="text-xl font-heading font-semibold mb-4">Transportation Options</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {selectedTour.transportationOptions.map((option) => (
+              <label
+                key={option.type}
+                className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                  formData.transportationType === option.type
+                    ? 'border-primary bg-primary/5'
+                    : 'border-gray-300 hover:border-primary/50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="transportationType"
+                  value={option.type}
+                  checked={formData.transportationType === option.type}
+                  onChange={handleChange}
+                  className="sr-only"
+                />
+                <div className="font-semibold mb-2">{option.type}</div>
+                <div className="text-primary font-bold mb-2">
+                  {option.price === 0 ? 'Included' : `+$${option.price}/person`}
+                </div>
+                <div className="text-sm text-gray-600">{option.description}</div>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
       
       <h3 className="text-xl font-heading font-semibold mb-4">Contact Information</h3>
       
@@ -334,7 +462,60 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
         ></textarea>
       </div>
       
+      {/* Price Summary */}
+      {selectedTour?.contactForPricing && (
+        <div className="bg-primary/5 rounded-lg p-6 mb-8 border border-primary/20">
+          <h3 className="text-xl font-heading font-semibold mb-3">Contact Us to Book</h3>
+          <p className="text-gray-600 mb-4">
+            {selectedTour.name} pricing depends on group size and route. Please contact us directly for a quote and availability.
+          </p>
+          <Link href="/contact" className="btn-primary inline-block">
+            Contact Us for Pricing
+          </Link>
+        </div>
+      )}
+
+      {selectedTour && !selectedTour.contactForPricing && formData.participants && (
+        <div className="bg-gray-50 rounded-lg p-6 mb-8">
+          <h3 className="text-xl font-heading font-semibold mb-4">Price Summary</h3>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-gray-600">
+                {selectedTour.name} x {formData.participants}
+              </span>
+              <span className="font-medium">
+                ${((selectedTour.price ?? 0) * parseInt(formData.participants)).toFixed(2)}
+              </span>
+            </div>
+            {formData.transportationType && selectedTour.transportationOptions && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">
+                  {formData.transportationType} Transportation x {formData.participants}
+                </span>
+                <span className="font-medium">
+                  $
+                  {(
+                    (selectedTour.transportationOptions.find(
+                      (opt) => opt.type === formData.transportationType
+                    )?.price || 0) * parseInt(formData.participants)
+                  ).toFixed(2)}
+                </span>
+              </div>
+            )}
+            <div className="border-t pt-2 mt-2">
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-semibold">Total:</span>
+                <span className="text-2xl font-bold text-primary">
+                  ${calculateTotal().toFixed(2)}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Submit Button */}
+      {!selectedTour?.contactForPricing && (
       <div className="text-right">
         <button
           type="submit"
@@ -350,10 +531,12 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
               Processing...
             </span>
           ) : (
-            'Book Now'
+            'Submit Booking Request'
           )}
         </button>
       </div>
-    </form>
+      )}
+      </form>
+    </>
   );
 } 

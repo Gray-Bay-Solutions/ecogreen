@@ -1,9 +1,9 @@
 import MainLayout from '@/components/layout/MainLayout';
 import Hero from '@/components/home/Hero';
 import FeaturedTours from '@/components/home/FeaturedTours';
-// import Testimonials from '@/components/home/Testimonials';
 import Link from 'next/link';
 import Image from 'next/image';
+import { TOUR_INTRO } from '@/lib/tour-policies';
 
 export default function HomePage() {
   return (
@@ -19,14 +19,16 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-heading font-bold text-text mb-6">Experience Nosara&apos;s Natural Beauty</h2>
               <p className="text-gray-600 mb-6">
-                At Eco Green Nosara, we&apos;re passionate about sharing the incredible biodiversity and natural wonders of Costa Rica while preserving them for future generations.
+                {TOUR_INTRO}
               </p>
-              <p className="text-gray-600 mb-8">
-                Our expert guides provide immersive experiences that connect you with nature in a responsible and sustainable way. Whether you&apos;re kayaking through mangroves, hiking lush forest trails, or learning about coffee production, our tours offer unforgettable memories and a deeper appreciation for our natural world.
-              </p>
-              <Link href="/about" className="btn-primary">
-                Learn More About Us
-              </Link>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/about" className="btn-primary">
+                  Learn More About Us
+                </Link>
+                <Link href="/tours#tour-guide" className="btn-secondary">
+                  View Tour Guide
+                </Link>
+              </div>
             </div>
             <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
               <Image

@@ -14,7 +14,7 @@ const galleryImages = [
     id: 1,
     src: '/images/gallery/kayak-1.jpg',
     alt: 'Kayaking through mangroves',
-    category: 'kayak-tour',
+    category: 'mangrove-tour',
     width: 800,
     height: 600
   },
@@ -38,7 +38,7 @@ const galleryImages = [
     id: 4,
     src: '/images/gallery/paddle-3.jpg',
     alt: 'Paddle boarding at sunset',
-    category: 'paddle-board',
+    category: 'mangrove-tour',
     width: 800,
     height: 800
   },
@@ -62,7 +62,7 @@ const galleryImages = [
     id: 7,
     src: '/images/gallery/kayak-2.jpg',
     alt: 'Group kayaking through calm waters',
-    category: 'kayak-tour',
+    category: 'mangrove-tour',
     width: 800,
     height: 533
   },
@@ -78,7 +78,7 @@ const galleryImages = [
     id: 9,
     src: '/images/gallery/paddle-1.jpg',
     alt: 'Person paddle boarding on clear water',
-    category: 'paddle-board',
+    category: 'mangrove-tour',
     width: 800,
     height: 600
   },
@@ -102,7 +102,7 @@ const galleryImages = [
     id: 12,
     src: '/images/gallery/kayak-3.jpg',
     alt: 'Kayakers spotting wildlife',
-    category: 'kayak-tour',
+    category: 'mangrove-tour',
     width: 600,
     height: 800
   },
@@ -118,7 +118,7 @@ const galleryImages = [
     id: 14,
     src: '/images/gallery/paddle-2.jpg',
     alt: 'Aerial view of paddle boarders',
-    category: 'paddle-board',
+    category: 'mangrove-tour',
     width: 800,
     height: 533
   },
@@ -134,11 +134,13 @@ const galleryImages = [
 
 const categories = [
   { id: 'all', name: 'All Photos' },
-  { id: 'kayak-tour', name: 'Kayak Tour' },
-  { id: 'paddle-board', name: 'Paddle Board' },
-  { id: 'coffee-tour', name: 'Coffee Tour' },
+  { id: 'mangrove-tour', name: 'Mangrove Tour' },
+  { id: 'coffee-tour', name: 'Organic Coffee Tour' },
   { id: 'nature-hike', name: 'Nature Hike' },
-  { id: 'bird-watching', name: 'Bird Watching' },
+  { id: 'bird-watching', name: 'Birdwatching' },
+  { id: 'castilla-tour', name: 'La Castilla Tour' },
+  { id: 'snorkeling', name: 'Snorkeling' },
+  { id: 'atv-tour', name: 'ATV Tours' },
 ];
 
 export default function GalleryPage() {

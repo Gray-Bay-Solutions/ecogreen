@@ -1,12 +1,15 @@
 export interface Tour {
   id: string;
   name: string;
-  price: number;
+  price?: number;
+  contactForPricing?: boolean;
   description: string;
   longDescription: string;
   duration: string;
   difficulty: string;
   startTimes: string[];
+  minGroupSize?: number;
+  maxGroupSize?: number;
   includedItems: string[];
   whatToBring: string[];
   imageUrl: string;

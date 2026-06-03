@@ -67,8 +67,13 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg mb-1">Phone</h3>
-                      <p className="text-gray-600">+506 1234 5678</p>
-                      <p className="text-gray-600">WhatsApp: +506 1234 5678</p>
+                      <p className="text-gray-600">
+                        <a href="tel:+50661111023" className="hover:text-primary transition-colors">+506 6111 1023</a>
+                      </p>
+                      <p className="text-gray-600">
+                        WhatsApp:{' '}
+                        <a href="https://wa.me/50661111023" className="hover:text-primary transition-colors">+506 6111 1023</a>
+                      </p>
                     </div>
                   </div>
                   
@@ -80,8 +85,9 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg mb-1">Email</h3>
-                      <p className="text-gray-600">info@ecogreennosara.com</p>
-                      <p className="text-gray-600">bookings@ecogreennosara.com</p>
+                      <p className="text-gray-600">
+                        <a href="mailto:Schusslera333@gmail.com" className="hover:text-primary transition-colors">Schusslera333@gmail.com</a>
+                      </p>
                     </div>
                   </div>
                   

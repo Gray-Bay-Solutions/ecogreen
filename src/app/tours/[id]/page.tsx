@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { Tour } from '@/types';
 import tours from '@/data/tours.json';
+import { formatTourPrice, formatTourPricePerPerson, isBookableOnline } from '@/lib/tours';
+import { CONTACT_PHONE, CONTACT_PHONE_LINK } from '@/lib/tour-policies';
+import TourPolicies from '@/components/tours/TourPolicies';
 
 export async function generateStaticParams() {
   return tours.map((tour: Tour) => ({
@@ -69,7 +72,7 @@ export default async function TourDetailPage({ params }: any) {
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.993 0-1.953.146-2.863.418.155.393.271.788.275 1.133.16-.14.327-.279.495-.418.829-.686 1.747-1.065 2.536-1.123.79-.058 1.439.15 1.844.406.32.204.531.444.661.674.276.494.381 1.06.312 1.69-.158 1.431-1.274 2.468-2.918 2.835.37.654.887 1.336 1.476 1.955a6 6 0 10-1.818-7.57zm1.616 1.83c-.16-.095-.365-.186-.59-.24-.307-.077-.651-.091-1.08-.034-.431.057-1.07.299-1.682.8-1.223 1.01-1.678 2.131-1.375 3.43.302 1.296 1.247 1.91 2.12 2.247.872.337 1.842.35 2.758.3.463-.025.861-.06 1.208-.122.347-.062.655-.168.934-.337.478-.292.764-.8.722-1.53-.042-.728-.392-1.39-.871-1.915a6.11 6.11 0 00-1.825-1.389c-.143-.072-.292-.133-.447-.186.053-.307.086-.631.053-.978-.045-.47-.208-.926-.525-1.046z" clipRule="evenodd"></path>
                 </svg>
-                <span>${tour.price} per person</span>
+                <span>{formatTourPricePerPerson(tour)}</span>
               </div>
             </div>
           </div>
@@ -141,28 +144,63 @@ export default async function TourDetailPage({ params }: any) {
                     </div>
                     <div>
                       <span className="block text-sm text-gray-500 mb-1">Group Size</span>
-                      <span className="font-medium">Minimum 2, Maximum 12 participants</span>
+                      <span className="font-medium">
+                        Minimum {tour.minGroupSize ?? 2}, Maximum {tour.maxGroupSize ?? 12} participants
+                      </span>
+                    </div>
+                    <div>
+                      <span className="block text-sm text-gray-500 mb-1">Transportation</span>
+                      <span className="font-medium">Not included — may be arranged for an additional fee</span>
                     </div>
                   </div>
                 </div>
                 
                 <div className="bg-primary/5 p-6 rounded-lg">
                   <h3 className="font-heading font-semibold text-lg mb-4">Book This Tour</h3>
-                  <p className="text-gray-600 mb-6">
-                    Secure your spot now for an unforgettable eco-adventure in Nosara. Private tours and group discounts are available.
+                  <p className="text-gray-600 mb-4">
+                    {tour.contactForPricing
+                      ? 'For pricing and availability, please contact us directly.'
+                      : 'Secure your spot now for an unforgettable eco-adventure in Nosara.'}
+                    {!tour.contactForPricing && ' Private tours are also available.'}
                   </p>
+                  {tour.id === 'bird-watching' && (
+                    <p className="text-gray-600 mb-4 text-sm">
+                      Tour availability depends on the season.
+                    </p>
+                  )}
+                  {tour.id === 'snorkeling' && (
+                    <p className="text-gray-600 mb-4 text-sm">
+                      Boat tour available for an additional cost — inquire when booking.
+                    </p>
+                  )}
+                  <p className="text-gray-600 mb-4 text-sm">
+                    Questions? Call{' '}
+                    <a href={CONTACT_PHONE_LINK} className="text-primary hover:underline">{CONTACT_PHONE}</a>
+                    {' '}or email{' '}
+                    <a href="mailto:Schusslera333@gmail.com" className="text-primary hover:underline">Schusslera333@gmail.com</a>
+                  </p>
+                  <TourPolicies className="mb-6" />
                   <div className="flex flex-col space-y-4">
-                    <Link 
-                      href={`/booking?tour=${tour.id}`}
-                      className="btn-primary text-center"
-                    >
-                      Book Now
-                    </Link>
+                    {isBookableOnline(tour) ? (
+                      <Link 
+                        href={`/booking?tour=${tour.id}`}
+                        className="btn-primary text-center"
+                      >
+                        Book Now
+                      </Link>
+                    ) : (
+                      <Link 
+                        href="/contact" 
+                        className="btn-primary text-center"
+                      >
+                        Contact Us for Pricing
+                      </Link>
+                    )}
                     <Link 
                       href="/contact" 
                       className="btn-secondary text-center"
                     >
-                      Contact for Private Tour
+                      {tour.contactForPricing ? 'Send an Inquiry' : 'Contact for Private Tour'}
                     </Link>
                   </div>
                 </div>
@@ -179,7 +217,7 @@ export default async function TourDetailPage({ params }: any) {
                       <h3 className="font-heading font-semibold text-lg mb-2">{option.type} Transportation</h3>
                       <div className="mb-4">
                         <span className="font-medium text-xl text-primary">
-                          {option.price === 0 ? 'Included' : `+$${option.price}`}
+                          {option.price === 0 ? 'Inquire when booking' : `+$${option.price}`}
                         </span>
                       </div>
                       <p className="text-gray-600">{option.description}</p>
@@ -236,7 +274,9 @@ export default async function TourDetailPage({ params }: any) {
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="text-lg font-heading font-semibold">{otherTour.name}</h3>
-                      <span className="text-primary font-bold">${otherTour.price}</span>
+                      <span className={`font-bold ${otherTour.contactForPricing ? 'text-sm text-gray-600' : 'text-primary'}`}>
+                        {formatTourPrice(otherTour)}
+                      </span>
                     </div>
                     <div className="mb-6">
                       <span className="text-sm text-gray-500">{otherTour.duration} • {otherTour.difficulty}</span>

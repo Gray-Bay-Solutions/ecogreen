@@ -10,7 +10,7 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-heading font-bold mb-4">Eco Green Nosara</h3>
             <p className="mb-2">Nosara, Costa Rica</p>
-            <p className="mb-2">Email: info@ecogreennosara.com</p>
+            <p className="mb-2">Email: Schusslera333@gmail.com</p>
             <p className="mb-2">Phone: +506 6111 1023</p>
           </div>
           
