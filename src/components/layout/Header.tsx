@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-// import Image from 'next/image';
+import Image from 'next/image';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,8 +14,15 @@ export default function Header() {
   return (
     <header className="bg-white py-4 shadow-sm sticky top-0 z-50">
       <div className="container-custom flex justify-between items-center">
-        <Link href="/" className="flex items-center">
-          <span className="text-2xl font-heading font-bold text-primary">Eco Green Nosara</span>
+        <Link href="/" className="flex items-center shrink-0">
+          <Image
+            src="/logo.png"
+            alt="Eco Green Nosara"
+            width={160}
+            height={48}
+            className="h-10 md:h-12 w-auto"
+            priority
+          />
         </Link>
 
         {/* Mobile menu button */}
