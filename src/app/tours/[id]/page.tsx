@@ -150,7 +150,11 @@ export default async function TourDetailPage({ params }: any) {
                     </div>
                     <div>
                       <span className="block text-sm text-gray-500 mb-1">Transportation</span>
-                      <span className="font-medium">Not included — may be arranged for an additional fee</span>
+                      <span className="font-medium">
+                        {tour.transportationIncluded
+                          ? 'Included'
+                          : 'Not included — may be arranged for an additional fee'}
+                      </span>
                     </div>
                   </div>
                 </div>

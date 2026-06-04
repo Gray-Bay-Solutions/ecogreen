@@ -68,11 +68,27 @@ const galleryImages = [
   },
   {
     id: 8,
-    src: '/images/gallery/hike-3.jpg',
-    alt: 'Waterfall in the forest',
-    category: 'nature-hike',
-    width: 600,
-    height: 800
+    src: '/images/gallery/waterfall-1.jpg',
+    alt: 'Twin waterfalls cascading over rocky cliffs',
+    category: 'waterfall-tour',
+    width: 576,
+    height: 1024
+  },
+  {
+    id: 16,
+    src: '/images/gallery/waterfall-2.jpg',
+    alt: 'Tiered waterfall in a lush green forest',
+    category: 'waterfall-tour',
+    width: 768,
+    height: 1024
+  },
+  {
+    id: 17,
+    src: '/images/gallery/waterfall-3.jpg',
+    alt: 'Waterfall flowing into a jungle pool',
+    category: 'waterfall-tour',
+    width: 768,
+    height: 1024
   },
   {
     id: 9,
@@ -137,6 +153,7 @@ const categories = [
   { id: 'mangrove-tour', name: 'Mangrove Tour' },
   { id: 'coffee-tour', name: 'Organic Coffee Tour' },
   { id: 'nature-hike', name: 'Nature Hike' },
+  { id: 'waterfall-tour', name: 'Waterfall Tour' },
   { id: 'bird-watching', name: 'Birdwatching' },
   { id: 'castilla-tour', name: 'La Castilla Tour' },
   { id: 'snorkeling', name: 'Snorkeling' },

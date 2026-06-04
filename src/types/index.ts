@@ -14,6 +14,7 @@ export interface Tour {
   whatToBring: string[];
   imageUrl: string;
   gallery: string[];
+  transportationIncluded?: boolean;
   transportationOptions?: TransportationOption[];
 }
 

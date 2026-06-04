@@ -89,9 +89,12 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
     if (!formData.tourId) errors.tourId = 'Please select a tour';
     if (!formData.date) errors.date = 'Please select a date';
     if (!formData.time) errors.time = 'Please select a time';
-    if (!formData.participants || parseInt(formData.participants) < 1) {
+    const participants = parseInt(formData.participants, 10);
+    if (!formData.participants || participants < 1) {
       errors.participants = 'Please enter at least 1 participant';
-    } else if (tour?.maxGroupSize && parseInt(formData.participants) > tour.maxGroupSize) {
+    } else if (tour?.minGroupSize && participants < tour.minGroupSize) {
+      errors.participants = `Minimum ${tour.minGroupSize} participants for this tour`;
+    } else if (tour?.maxGroupSize && participants > tour.maxGroupSize) {
       errors.participants = `Maximum ${tour.maxGroupSize} participants for this tour`;
     }
     if (!formData.name.trim()) errors.name = 'Please enter your name';
@@ -334,7 +337,7 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
             name="participants"
             value={formData.participants}
             onChange={handleChange}
-            min="1"
+            min={selectedTour?.minGroupSize ?? 1}
             max={selectedTour?.maxGroupSize ?? 12}
             className={`w-full p-3 rounded-md border ${
               formErrors.participants ? 'border-red-500' : 'border-gray-300'

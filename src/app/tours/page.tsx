@@ -100,8 +100,6 @@ export default function ToursPage() {
           </div>
         </div>
       </section>
-
-      <ToursInfographic />
     </MainLayout>
   );
 } 
