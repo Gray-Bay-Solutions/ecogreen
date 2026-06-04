@@ -6,7 +6,6 @@ import { Tour } from '@/types';
 import tours from '@/data/tours.json';
 import { formatTourPrice } from '@/lib/tours';
 import ToursIntro from '@/components/tours/ToursIntro';
-import ToursInfographic from '@/components/tours/ToursInfographic';
 
 export const metadata: Metadata = {
   title: 'Our Tours | Eco Green Nosara',
