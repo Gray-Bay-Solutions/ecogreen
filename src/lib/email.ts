@@ -56,28 +56,28 @@ export async function sendBookingEmails(data: BookingEmailData) {
   const toEmail = process.env.BOOKING_TO_EMAIL || 'Schusslera333@gmail.com';
   const details = formatBookingDetails(data);
 
-  const [ownerResult, customerResult] = await Promise.all([
-    resend.emails.send({
-      from: fromEmail,
-      to: toEmail,
-      replyTo: data.customerEmail,
-      subject: `New booking request — ${data.tourName} (${data.bookingReference})`,
-      text: `New tour booking request:\n\n${details}`,
-    }),
-    resend.emails.send({
-      from: fromEmail,
-      to: data.customerEmail,
-      subject: `Booking request received — ${data.tourName}`,
-      text: `Hi ${data.customerName},\n\nThank you for your booking request with Eco Green Nosara. We have received your details and will contact you shortly to confirm availability.\n\n${details}\n\nQuestions? Reply to this email or call +506 6111 1023.\n\nPura Vida!\nEco Green Nosara`,
-    }),
-  ]);
+  const ownerResult = await resend.emails.send({
+    from: fromEmail,
+    to: toEmail,
+    replyTo: data.customerEmail,
+    subject: `New booking request — ${data.tourName} (${data.bookingReference})`,
+    text: `New tour booking request:\n\n${details}`,
+  });
+
+  // Client confirmation email — disabled for now
+  // const customerResult = await resend.emails.send({
+  //   from: fromEmail,
+  //   to: data.customerEmail,
+  //   subject: `Booking request received — ${data.tourName}`,
+  //   text: `Hi ${data.customerName},\n\nThank you for your booking request with Eco Green Nosara. We have received your details and will contact you shortly to confirm availability.\n\n${details}\n\nQuestions? Reply to this email or call +506 6111 1023.\n\nPura Vida!\nEco Green Nosara`,
+  // });
 
   if (ownerResult.error) {
     throw new Error(ownerResult.error.message);
   }
-  if (customerResult.error) {
-    throw new Error(customerResult.error.message);
-  }
+  // if (customerResult.error) {
+  //   throw new Error(customerResult.error.message);
+  // }
 
-  return { ownerResult, customerResult };
+  return { ownerResult };
 }
