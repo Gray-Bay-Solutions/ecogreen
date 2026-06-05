@@ -9,3 +9,6 @@ export const IVA_POLICY =
 
 export const CONTACT_PHONE = "+506 6111 1023";
 export const CONTACT_PHONE_LINK = "tel:+50661111023";
+
+export const INSTAGRAM_URL = "https://www.instagram.com/tourswithalex333/";
+export const INSTAGRAM_HANDLE = "@tourswithalex333";

@@ -1,6 +1,7 @@
 import MainLayout from '@/components/layout/MainLayout';
 import Hero from '@/components/home/Hero';
 import FeaturedTours from '@/components/home/FeaturedTours';
+import InstagramSection from '@/components/home/InstagramSection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { TOUR_INTRO } from '@/lib/tour-policies';
@@ -41,6 +42,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <InstagramSection />
       
       {/* <Testimonials /> */}
       
