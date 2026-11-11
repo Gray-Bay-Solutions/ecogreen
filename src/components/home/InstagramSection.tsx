@@ -5,17 +5,24 @@ import type { Tour } from '@/types';
 
 const PREVIEW_COUNT = 6;
 
+const LOW_RES_PREFIXES = [
+  '/images/gallery/blue-zone-',
+];
+
+function isLowResPreview(src: string): boolean {
+  return LOW_RES_PREFIXES.some((prefix) => src.startsWith(prefix));
+}
+
 function getPreviewImages(): string[] {
   const seen = new Set<string>();
   const images: string[] = [];
 
   for (const tour of tours as Tour[]) {
     for (const src of tour.gallery) {
-      if (!seen.has(src)) {
-        seen.add(src);
-        images.push(src);
-        if (images.length >= PREVIEW_COUNT) return images;
-      }
+      if (isLowResPreview(src) || seen.has(src)) continue;
+      seen.add(src);
+      images.push(src);
+      if (images.length >= PREVIEW_COUNT) return images;
     }
   }
 
@@ -54,6 +61,7 @@ export default function InstagramSection() {
                 src={src}
                 alt={`Eco Green Nosara tour photo ${index + 1}`}
                 fill
+                quality={85}
                 sizes="(max-width: 768px) 50vw, 33vw"
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />

@@ -45,10 +45,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const basePrice = (tour.price ?? 0) * participants;
+    let basePrice = (tour.price ?? 0) * participants;
     let transportationPrice = 0;
 
-    if (transportationType && tour.transportationOptions) {
+    if (transportationType && tour.packageOptions) {
+      const selectedPackage = tour.packageOptions.find(
+        (opt) => opt.type === transportationType
+      );
+      if (!selectedPackage) {
+        return NextResponse.json(
+          { error: 'Invalid package option' },
+          { status: 400 }
+        );
+      }
+      basePrice = selectedPackage.price * participants;
+      transportationPrice = 0;
+    } else if (transportationType && tour.transportationOptions) {
       const transportOption = tour.transportationOptions.find(
         (opt) => opt.type === transportationType
       );

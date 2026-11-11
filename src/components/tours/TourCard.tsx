@@ -15,7 +15,9 @@ export default function TourCard({ tour }: TourCardProps) {
           src={tour.imageUrl}
           alt={tour.name}
           className="object-cover"
+          style={{ objectPosition: tour.imagePosition ?? 'center center' }}
           fill
+          quality={90}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>

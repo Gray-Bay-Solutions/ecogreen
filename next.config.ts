@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         destination: '/tours/mangrove-tour',
         permanent: true,
       },
+      {
+        source: '/tours/castilla-tour',
+        destination: '/tours/blue-zone-hike',
+        permanent: true,
+      },
     ];
   },
 };

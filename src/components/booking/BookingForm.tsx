@@ -42,13 +42,22 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
   // Available times for the selected tour
   const [availableTimes, setAvailableTimes] = useState<string[]>([]);
 
-  // Update available times when tourId changes
+  // Update available times / package defaults when tourId changes
   useEffect(() => {
     if (formData.tourId) {
-      const selectedTour = tours.find((tour: Tour) => tour.id === formData.tourId);
-      if (selectedTour) {
-        setAvailableTimes(selectedTour.startTimes);
-        setFormData(prev => ({ ...prev, time: '' })); // Reset time when tour changes
+      const selected = tours.find((tour: Tour) => tour.id === formData.tourId);
+      if (selected) {
+        setAvailableTimes(selected.startTimes);
+        const defaultPackage =
+          selected.packageOptions?.find((opt) => opt.type === 'With lunch')?.type ||
+          selected.packageOptions?.find((opt) => opt.type === 'With transportation')?.type ||
+          selected.packageOptions?.[0]?.type ||
+          '';
+        setFormData((prev) => ({
+          ...prev,
+          time: '',
+          transportationType: defaultPackage,
+        }));
       }
     } else {
       setAvailableTimes([]);
@@ -104,6 +113,9 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
       errors.email = 'Please enter a valid email address';
     }
     if (!formData.phone.trim()) errors.phone = 'Please enter your phone number';
+    if (tour?.packageOptions?.length && !formData.transportationType) {
+      errors.transportationType = 'Please select a package';
+    }
     
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -111,21 +123,33 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
   
   // Calculate total price
   const calculateTotal = () => {
-    if (!selectedTour || selectedTour.contactForPricing || selectedTour.price == null) return 0;
-    
-    const basePrice = selectedTour.price * parseInt(formData.participants || '1');
-    let transportationPrice = 0;
+    if (!selectedTour || selectedTour.contactForPricing) return 0;
+
+    const participants = parseInt(formData.participants || '1', 10);
+
+    if (formData.transportationType && selectedTour.packageOptions) {
+      const selectedPackage = selectedTour.packageOptions.find(
+        (opt) => opt.type === formData.transportationType
+      );
+      if (selectedPackage) {
+        return selectedPackage.price * participants;
+      }
+    }
+
+    if (selectedTour.price == null) return 0;
+
+    let total = selectedTour.price * participants;
     
     if (formData.transportationType && selectedTour.transportationOptions) {
       const transportOption = selectedTour.transportationOptions.find(
         (opt) => opt.type === formData.transportationType
       );
       if (transportOption) {
-        transportationPrice = transportOption.price * parseInt(formData.participants || '1');
+        total += transportOption.price * participants;
       }
     }
     
-    return basePrice + transportationPrice;
+    return total;
   };
 
   // Initialize PayPal buttons (disabled — set NEXT_PUBLIC_PAYMENTS_ENABLED=true to re-enable)
@@ -303,6 +327,11 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
           <label htmlFor="time" className="block font-medium text-text mb-1">
             Time <span className="text-red-500">*</span>
           </label>
+          {selectedTour?.bookingNote && (
+            <p className="text-sm text-amber-800 bg-amber-50 border border-amber-100 rounded-md p-2 mb-2">
+              {selectedTour.bookingNote}
+            </p>
+          )}
           <select
             id="time"
             name="time"
@@ -350,6 +379,42 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
         </div>
       </div>
       
+      {/* Package Options */}
+      {selectedTour?.packageOptions && (
+        <div className="mb-6">
+          <h3 className="text-xl font-heading font-semibold mb-4">
+            Package Options <span className="text-red-500">*</span>
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {selectedTour.packageOptions.map((option) => (
+              <label
+                key={option.type}
+                className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                  formData.transportationType === option.type
+                    ? 'border-primary bg-primary/5'
+                    : 'border-gray-300 hover:border-primary/50'
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="transportationType"
+                  value={option.type}
+                  checked={formData.transportationType === option.type}
+                  onChange={handleChange}
+                  className="sr-only"
+                />
+                <div className="font-semibold mb-2">{option.type}</div>
+                <div className="text-primary font-bold mb-2">${option.price}/person</div>
+                <div className="text-sm text-gray-600">{option.description}</div>
+              </label>
+            ))}
+          </div>
+          {formErrors.transportationType && (
+            <p className="text-red-500 text-sm mt-2">{formErrors.transportationType}</p>
+          )}
+        </div>
+      )}
+
       {/* Transportation Options */}
       {selectedTour?.transportationOptions && (
         <div className="mb-6">
@@ -482,28 +547,41 @@ export default function BookingForm({ selectedTourId }: BookingFormProps) {
         <div className="bg-gray-50 rounded-lg p-6 mb-8">
           <h3 className="text-xl font-heading font-semibold mb-4">Price Summary</h3>
           <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-600">
-                {selectedTour.name} x {formData.participants}
-              </span>
-              <span className="font-medium">
-                ${((selectedTour.price ?? 0) * parseInt(formData.participants)).toFixed(2)}
-              </span>
-            </div>
-            {formData.transportationType && selectedTour.transportationOptions && (
+            {formData.transportationType && selectedTour.packageOptions ? (
               <div className="flex justify-between">
                 <span className="text-gray-600">
-                  {formData.transportationType} Transportation x {formData.participants}
+                  {selectedTour.name} ({formData.transportationType}) x {formData.participants}
                 </span>
                 <span className="font-medium">
-                  $
-                  {(
-                    (selectedTour.transportationOptions.find(
-                      (opt) => opt.type === formData.transportationType
-                    )?.price || 0) * parseInt(formData.participants)
-                  ).toFixed(2)}
+                  ${calculateTotal().toFixed(2)}
                 </span>
               </div>
+            ) : (
+              <>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">
+                    {selectedTour.name} x {formData.participants}
+                  </span>
+                  <span className="font-medium">
+                    ${((selectedTour.price ?? 0) * parseInt(formData.participants)).toFixed(2)}
+                  </span>
+                </div>
+                {formData.transportationType && selectedTour.transportationOptions && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">
+                      {formData.transportationType} Transportation x {formData.participants}
+                    </span>
+                    <span className="font-medium">
+                      $
+                      {(
+                        (selectedTour.transportationOptions.find(
+                          (opt) => opt.type === formData.transportationType
+                        )?.price || 0) * parseInt(formData.participants)
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+              </>
             )}
             <div className="border-t pt-2 mt-2">
               <div className="flex justify-between items-center">

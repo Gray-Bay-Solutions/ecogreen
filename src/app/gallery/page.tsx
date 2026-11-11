@@ -155,7 +155,8 @@ const categories = [
   { id: 'nature-hike', name: 'Nature Hike' },
   { id: 'waterfall-tour', name: 'Waterfall Tour' },
   { id: 'bird-watching', name: 'Birdwatching' },
-  { id: 'castilla-tour', name: 'La Castilla Tour' },
+  { id: 'blue-zone-hike', name: 'Blue Zone Hike' },
+  { id: 'crystal-beach-snorkeling', name: 'Crystal Beach Snorkeling' },
   { id: 'snorkeling', name: 'Snorkeling' },
   { id: 'atv-tour', name: 'ATV Tours' },
 ];

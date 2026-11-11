@@ -9,7 +9,7 @@ import ToursIntro from '@/components/tours/ToursIntro';
 
 export const metadata: Metadata = {
   title: 'Our Tours | Eco Green Nosara',
-  description: 'Explore eco-friendly tours in Nosara, Costa Rica — mangrove kayak & paddle, nature hikes, birdwatching, organic coffee, waterfalls, snorkeling, La Castilla, and ATV adventures.',
+  description: 'Explore eco-friendly tours in Nosara, Costa Rica — Blue Zone Hike, Crystal Beach snorkeling, mangrove kayak & paddle, nature hikes, birdwatching, organic coffee, waterfalls, and ATV adventures.',
 };
 
 export default function ToursPage() {
@@ -43,12 +43,15 @@ export default function ToursPage() {
               <div key={tour.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-5">
                   {/* Tour Image */}
-                  <div className="relative h-64 md:h-auto md:col-span-2">
+                  <div className="relative h-64 md:min-h-[280px] md:col-span-2">
                     <Image
                       src={tour.imageUrl}
                       alt={tour.name}
                       fill
+                      quality={90}
+                      sizes="(max-width: 768px) 100vw, 40vw"
                       className="object-cover"
+                      style={{ objectPosition: tour.imagePosition ?? 'center center' }}
                     />
                   </div>
                   
