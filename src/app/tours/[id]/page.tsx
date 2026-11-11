@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 export default async function TourDetailPage({ params }: any) {
   const tourId = (await params).id;
-  const tour = tours.find((t: Tour) => t.id === tourId);
+  const tour = tours.find((t) => t.id === tourId) as Tour | undefined;
 
   if (!tour) {
     notFound();
